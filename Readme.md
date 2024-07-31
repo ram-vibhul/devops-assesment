@@ -30,7 +30,7 @@ Configuration is managed using `spf13/viper`. Default values are specified in th
 
 ```export BANK_POSTGRES_HOST=example.com:2019 ```
 
-## Assessment Description
+## How to submit results
 
 Fork this repository and solve as many tasks from list below as you can, folowing best practices of industry.
 
