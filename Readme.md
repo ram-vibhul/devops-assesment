@@ -15,7 +15,7 @@ The application stores data in a PostgreSQL database and supports schema migrati
 
 A health check endpoint is available and can be used for probes:
 
-/health
+`/health`
 
 
 ## Infrastructure Requirements
@@ -28,9 +28,7 @@ Configuration is managed using `spf13/viper`. Default values are specified in th
 
 **Example:** Override the PostgreSQL host:
 
-```shell
-export BANK_POSTGRES_HOST=example.com:2019
-```
+```export BANK_POSTGRES_HOST=example.com:2019 ```
 
 ## Assessment Description
 
@@ -54,6 +52,4 @@ Push your results and share final version repo link with us.
     - Allocate only one pod per node
     
 * CI for Unit Tests (Optional): Set up continuous integration for running unit tests. The command for executing tests is:
-```shell
-go test -v -cover ./...
-```
+```go test -v -cover ./...```

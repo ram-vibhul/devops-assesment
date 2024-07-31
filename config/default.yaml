@@ -10,4 +10,4 @@ postgres:
   userName: test
   password: test
   sslMode: disable
-  automigrate: false
+  automigrate: true
