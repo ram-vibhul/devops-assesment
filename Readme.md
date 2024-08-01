@@ -32,9 +32,9 @@ Configuration is managed using `spf13/viper`. Default values are specified in th
 
 ## How to submit results
 
-Fork this repository and solve as many tasks from list below as you can, folowing best practices of industry.
+Fork this repository and solve as many tasks from the list below as you can, following best practices of the industry.
 
-Push your results and share final version repo link with us.
+Push your results and share the final version repo link and documentation with us.
 
 
 ## Assessment Tasks
