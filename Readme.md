@@ -34,7 +34,7 @@ Configuration is managed using `spf13/viper`. Default values are specified in th
 
 Fork this repository and solve as many tasks from the list below as you can, following best practices of the industry.
 
-Push your results and share the final version repo link and documentation with us.
+Push your results to the personal private repository and share the final version repo and documentation with us by adding [mehrdad-op](https://github.com/mehrdad-op) and [srcCraftsman](https://github.com/srcCraftsman) as read-level access colaborators.
 
 
 ## Assessment Tasks
