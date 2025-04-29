@@ -1,0 +1,80 @@
+name: Build, Test, and Push Docker Image
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - '*'
+
+permissions:
+  contents: read
+  id-token: write
+  packages: write
+
+jobs:
+  build-test-push:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:12
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: bdb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U test" 
+          --health-interval=10s 
+          --health-timeout=5s 
+          --health-retries=5
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1  # Prevents fetching unnecessary git history
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          driver: docker-container
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Wait for DB
+        run: |
+          until pg_isready -h localhost -p 5432 -U test; do
+            echo "Waiting for PostgreSQL..."
+            sleep 2
+          done
+
+      - name: Run tests
+        env:
+          BANK_POSTGRES_HOST: localhost:5432
+          BANK_POSTGRES_USER_NAME: test
+          BANK_POSTGRES_PASSWORD: test
+          BANK_POSTGRES_DATABASE: bdb
+          BANK_POSTGRES_SSLMODE: disable
+        run: go test -v -cover ./...
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/simplebank:latest
+            ${{ secrets.DOCKER_USERNAME }}/simplebank:${{ github.sha }}
+          provenance: true
+          sbom: true  # Generate SBOM (Software Bill of Materials)

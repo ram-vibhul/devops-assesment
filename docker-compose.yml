@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:12
+    restart: always
+    environment:
+      POSTGRES_DB: bdb
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build: .
+    depends_on:
+      - db
+    environment:
+      BANK_POSTGRES_HOST: db:5432
+      BANK_POSTGRES_USER: test
+      BANK_POSTGRES_PASSWORD: test
+      BANK_POSTGRES_DATABASE: bdb
+      BANK_POSTGRES_SSLMODE: disable
+      BANK_APP_HOST: 0.0.0.0
+      BANK_APP_PORT: 8080
+      BANK_POSTGRES_AUTOMIGRATE: "true"
+    ports:
+      - "8080:8080"
+    restart: on-failure
+
+volumes:
+  postgres_data:

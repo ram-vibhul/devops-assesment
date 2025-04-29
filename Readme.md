@@ -53,3 +53,78 @@ Push your results to the personal private repository and share the final version
     
 * CI for Unit Tests (Optional): Set up continuous integration for running unit tests. The command for executing tests is:
 ```go test -v -cover ./...```
+
+
+# DevOps task Deployment Guide
+
+This guide provides detailed instructions for deploying the SimpleBank API using **Docker Compose** for local development and **Helm** for Kubernetes environments.
+
+---
+
+## 📦 Option 1: Run with Docker Compose (Local Development)
+
+This setup runs the API and PostgreSQL locally using Docker Compose.
+
+### ▶️ Start the Application
+
+```bash
+git clone https://github.com/ram-vibhul/devops-assesment.git
+cd devops-assesment
+
+docker-compose up --build
+```
+
+### 🖑 Stop the Application
+
+```bash
+docker-compose down
+```
+
+### 📍 Access the Application
+
+- **API URL:** `http://localhost:8080`
+- **Health Check:** `http://localhost:8080/health`
+
+---
+
+## Option 2: Deploy with Helm (Kubernetes)
+
+Steps for deploying SimpleBank in a Kubernetes environment.
+
+### ▶️ Installation Steps
+
+1. **Clone the Repository:**
+
+   ```bash
+   git clone https://github.com/ram-vibhul/devops-assesment.git
+   cd devops-assesment/
+   ```
+
+2. **Install the Helm Chart:**
+
+   ```bash
+   helm upgrade --install simplebank ./charts
+   ```
+
+3. **Check Deployment Status:**
+
+   ```bash
+   kubectl get pods
+   kubectl get svc
+   ```
+
+4. **(Optional) Port Forward to Access API Locally:**
+
+   ```bash
+   kubectl port-forward svc/simplebank-simplebank 8080:8080
+   ```
+
+##  Health Check
+
+To verify the API is running:
+
+```bash
+curl http://localhost:8080/health
+```
+
+

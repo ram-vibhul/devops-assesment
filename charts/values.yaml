@@ -1,0 +1,54 @@
+replicaCount: 5
+
+image:
+  repository: ramjive/simplebank
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 8080
+
+resources:
+  limits:
+    cpu: "500m"
+    memory: "256Mi"
+  requests:
+    cpu: "200m"
+    memory: "128Mi"
+
+nodeSelector:
+  role: api
+
+tolerations: []
+
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+            - key: app
+              operator: In
+              values:
+                - simplebank
+        topologyKey: kubernetes.io/hostname
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1001
+
+containerSecurityContext:
+  capabilities:
+    drop:
+      - ALL
+  privileged: false
+
+postgresql:
+  enabled: true
+  auth:
+    username: test
+    password: test
+    database: bdb
+  primary:
+    persistence:
+      enabled: false 
